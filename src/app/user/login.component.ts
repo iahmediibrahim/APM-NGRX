@@ -5,6 +5,7 @@ import { Store, select } from '@ngrx/store';
 
 import { AuthService } from './auth.service';
 import { UserState, getMaskUserName } from './user-store/user.reducer';
+import { MaskUserName } from './user-store/user.actions';
 
 @Component({
     templateUrl: './login.component.html',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
     }
 
     checkChanged(value): void {
-        this.store.dispatch({ type: 'MASK_USER_NAME', payload: value });
+        this.store.dispatch(new MaskUserName(value));
     }
 
     login(loginForm: NgForm): void {
