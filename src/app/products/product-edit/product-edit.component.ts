@@ -1,4 +1,4 @@
-import { ClearCurrentProduct, SetCurrentProduct } from './../product-store/product.actions';
+import { ClearCurrentProduct, SetCurrentProduct, UpdateProduct } from './../product-store/product.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -127,17 +127,18 @@ export class ProductEditComponent implements OnInit, OnDestroy {
                 // Then copy over the values from the form
                 // This ensures values not on the form, such as the Id, are retained
                 const product = { ...originalProduct, ...this.productForm.value };
-
                 if (product.id === 0) {
                     this.productService.createProduct(product).subscribe({
                         next: (p) => this.store.dispatch(new SetCurrentProduct(p)),
                         error: (err) => (this.errorMessage = err),
                     });
                 } else {
-                    this.productService.updateProduct(product).subscribe({
-                        next: (p) => this.store.dispatch(new SetCurrentProduct(p)),
-                        error: (err) => (this.errorMessage = err),
-                    });
+                    this.store.dispatch(new UpdateProduct(product));
+
+                    // this.productService.updateProduct(product).subscribe({
+                    //     next: (p) => this.store.dispatch(new SetCurrentProduct(p)),
+                    //     error: (err) => (this.errorMessage = err),
+                    // });
                 }
             }
         }

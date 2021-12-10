@@ -15,6 +15,7 @@ import { MenuComponent } from './home/menu.component';
 import { WelcomeComponent } from './home/welcome.component';
 import { PageNotFoundComponent } from './home/page-not-found.component';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 /* Feature Modules */
 import { UserModule } from './user/user.module';
@@ -26,6 +27,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
         HttpClientModule,
         HttpClientInMemoryWebApiModule.forRoot(ProductData),
         StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
         UserModule,
         AppRoutingModule,
         // Instrumentation must be imported after importing StoreModule (config is optional)

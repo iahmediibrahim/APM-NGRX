@@ -1,3 +1,5 @@
+import { ProductEffects } from './product-store/product.effects';
+import { EffectsModule } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -9,20 +11,15 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './product-store/product.reducer';
 
-const productRoutes: Routes = [
-  { path: '', component: ProductShellComponent }
-];
+const productRoutes: Routes = [ { path: '', component: ProductShellComponent } ];
 
 @NgModule({
-  imports: [
-    SharedModule,
-    RouterModule.forChild(productRoutes),
-    StoreModule.forFeature('products', reducer)
-  ],
-  declarations: [
-    ProductShellComponent,
-    ProductListComponent,
-    ProductEditComponent
-  ]
+    imports: [
+        SharedModule,
+        RouterModule.forChild(productRoutes),
+        StoreModule.forFeature('products', reducer),
+        EffectsModule.forFeature([ ProductEffects ]),
+    ],
+    declarations: [ ProductShellComponent, ProductListComponent, ProductEditComponent ],
 })
-export class ProductModule { }
+export class ProductModule {}
