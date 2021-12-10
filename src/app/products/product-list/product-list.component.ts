@@ -36,11 +36,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
             error: (err) => (this.errorMessage = err),
         });
         // TODO: Unsubscribe
-        this.store.pipe(select('products')).subscribe((products) => {
-            if (products) {
-                this.displayCode = products.showProductCode;
-            }
-        });
+        this.store
+            .pipe(select(fromProduct.getShowProductCode))
+            .subscribe((showProductCode) => (this.displayCode = showProductCode));
     }
 
     ngOnDestroy(): void {
