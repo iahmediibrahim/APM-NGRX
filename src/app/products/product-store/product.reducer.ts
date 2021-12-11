@@ -73,6 +73,16 @@ export function reducer(state = initialState, action: ProductActions): ProductSt
             return { ...state, products, currentProductId: action.payload.id, error: '' };
         case ProductActionTypes.UpdateProductFail:
             return { ...state, products: [], error: action.payload };
+        case ProductActionTypes.CreateProductSuccess:
+            const newProducts = [ ...state.products, { ...action.payload } ];
+            return { ...state, products: newProducts, currentProductId: action.payload.id, error: '' };
+        case ProductActionTypes.CreateProductFail:
+            return { ...state, error: action.payload };
+        case ProductActionTypes.DeleteProductSuccess:
+            const updatedProducts = state.products.filter((p) => p.id !== action.payload.id);
+            return { ...state, products: updatedProducts, currentProductId: null, error: '' };
+        case ProductActionTypes.DeleteProductFail:
+            return { ...state, error: action.payload };
         default:
             return state;
     }

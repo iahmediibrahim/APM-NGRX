@@ -6,6 +6,12 @@ import {
     UpdateProduct,
     UpdateProductSuccess,
     UpdateProductFail,
+    CreateProduct,
+    CreateProductFail,
+    CreateProductSuccess,
+    DeleteProduct,
+    DeleteProductFail,
+    DeleteProductSuccess,
 } from './product.actions';
 import { ProductService } from './../product.service';
 import { Injectable } from '@angular/core';
@@ -41,6 +47,36 @@ export class ProductEffects {
                         map((product: Product) => new UpdateProductSuccess(product)),
                         catchError((err) => of(new UpdateProductFail(err))),
                     ),
+            ),
+        ),
+    );
+
+    CreateProduct$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(ProductActionTypes.CreateProduct),
+            map((action: CreateProduct) => action.payload),
+            mergeMap((product) =>
+                this.productService
+                    .createProduct(product)
+                    .pipe(
+                        map((product: Product) => new CreateProductSuccess(product)),
+                        catchError((err) => of(new CreateProductFail(err))),
+                    ),
+            ),
+        ),
+    );
+
+    DeleteProduct$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(ProductActionTypes.DeleteProduct),
+            map((action: DeleteProduct) => action.payload),
+            mergeMap((product) =>
+                this.productService.deleteProduct(product.id).pipe(
+                    map(() => {
+                        return new DeleteProductSuccess(product);
+                    }),
+                    catchError((err) => of(new DeleteProductFail(err))),
+                ),
             ),
         ),
     );

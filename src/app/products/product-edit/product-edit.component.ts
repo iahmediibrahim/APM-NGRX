@@ -1,4 +1,10 @@
-import { ClearCurrentProduct, SetCurrentProduct, UpdateProduct } from './../product-store/product.actions';
+import {
+    ClearCurrentProduct,
+    SetCurrentProduct,
+    UpdateProduct,
+    CreateProduct,
+    DeleteProduct,
+} from './../product-store/product.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -109,10 +115,12 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     deleteProduct(product: Product): void {
         if (product && product.id) {
             if (confirm(`Really delete the product: ${product.productName}?`)) {
-                this.productService.deleteProduct(product.id).subscribe({
-                    next: () => this.store.dispatch(new ClearCurrentProduct()),
-                    error: (err) => (this.errorMessage = err),
-                });
+                this.store.dispatch(new DeleteProduct(product));
+
+                // this.productService.deleteProduct(product.id).subscribe({
+                //     next: () => this.store.dispatch(new ClearCurrentProduct()),
+                //     error: (err) => (this.errorMessage = err),
+                // });
             }
         } else {
             // No need to delete, it was never saved
@@ -128,10 +136,12 @@ export class ProductEditComponent implements OnInit, OnDestroy {
                 // This ensures values not on the form, such as the Id, are retained
                 const product = { ...originalProduct, ...this.productForm.value };
                 if (product.id === 0) {
-                    this.productService.createProduct(product).subscribe({
-                        next: (p) => this.store.dispatch(new SetCurrentProduct(p)),
-                        error: (err) => (this.errorMessage = err),
-                    });
+                    this.store.dispatch(new CreateProduct(product));
+
+                    // this.productService.createProduct(product).subscribe({
+                    //     next: (p) => this.store.dispatch(new SetCurrentProduct(p)),
+                    //     error: (err) => (this.errorMessage = err),
+                    // });
                 } else {
                     this.store.dispatch(new UpdateProduct(product));
 
